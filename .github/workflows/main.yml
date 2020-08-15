@@ -15,7 +15,8 @@ jobs:
             triplet: x64-windows
 
     steps:
-
+      - uses: actions/checkout@v2
+        
       - uses: lukka/run-vcpkg@v3
         id: runvcpkg
         with:
