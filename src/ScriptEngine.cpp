@@ -39,6 +39,21 @@ ScriptEngine::ScriptEngine() : L(luaL_newstate()) {
             .beginClass<AddInObject>("AddInObject")
             .addFunction("GetInfo", &AddInObject::GetInfo)
             .addFunction("RegisterExtensionAs", &AddInObject::RegisterExtensionAs)
+            .addFunction("GetNProps", &AddInObject::GetNProps)
+            .addFunction("FindProp", &AddInObject::FindProp)
+            .addFunction("GetPropName", &AddInObject::GetPropName)
+            // GetPropVal
+            // SetPropVal
+            .addFunction("IsPropReadable", &AddInObject::IsPropReadable)
+            .addFunction("IsPropWritable", &AddInObject::IsPropWritable)
+            .addFunction("GetNMethods", &AddInObject::GetNMethods)
+            .addFunction("FindMethod", &AddInObject::FindMethod)
+            .addFunction("GetMethodName", &AddInObject::GetMethodName)
+            .addFunction("GetNParams", &AddInObject::GetNParams)
+            // GetParamDefValue
+            .addFunction("HasRetVal", &AddInObject::HasRetVal)
+            // CallAsProc
+            // CallAsFunc
             .endClass();
 
     getGlobalNamespace(L)

@@ -54,3 +54,23 @@ std::string AddInObject::RegisterExtensionAs() {
 
     return result;
 }
+
+long AddInObject::FindProp(const std::string &name) {
+    auto name_ = utf8_to_utf16(name);
+    return obj_->FindProp(name_.c_str());
+}
+
+std::string AddInObject::GetPropName(long num, long alias) {
+    auto name = obj_->GetPropName(num, alias);
+    return utf16_to_utf8(name);
+}
+
+long AddInObject::FindMethod(const std::string &name) {
+    auto name_ = utf8_to_utf16(name);
+    return obj_->FindMethod(name_.c_str());
+}
+
+std::string AddInObject::GetMethodName(long num, long alias) {
+    auto name = obj_->GetMethodName(num, alias);
+    return utf16_to_utf8(name);
+}

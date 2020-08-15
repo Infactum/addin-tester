@@ -31,9 +31,39 @@ public:
 
     virtual ~AddInObject();
 
-    inline long GetInfo() { return obj_->GetInfo(); };
+    inline long GetInfo() { return obj_->GetInfo(); }
 
     std::string RegisterExtensionAs();
+
+    inline long GetNProps() { return obj_->GetNProps(); }
+
+    long FindProp(const std::string &name);
+
+    std::string GetPropName(long num, long alias);
+
+    // GetPropVal
+
+    // SetPropVal
+
+    inline bool IsPropReadable(long num) { return obj_->IsPropReadable(num); }
+
+    inline bool IsPropWritable(long num) { return obj_->IsPropWritable(num); }
+
+    inline long GetNMethods() { return obj_->GetNMethods(); }
+
+    long FindMethod(const std::string &name);
+
+    std::string GetMethodName(long num, long alias);
+
+    inline long GetNParams(long num) { return obj_->GetNParams(num); }
+
+    // GetParamDefValue
+
+    inline bool HasRetVal(long num) { return obj_->HasRetVal(num); }
+
+    // CallAsProc
+
+    // CallAsFunc
 
 private:
     std::shared_ptr<IComponentBase> obj_;
