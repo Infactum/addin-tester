@@ -1,6 +1,8 @@
-set(TARGET engine)
-
 include(FindLua)
+
+set(TARGET engine)
+set(Boost_USE_STATIC_LIBS ON)
+
 find_package(Lua REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
