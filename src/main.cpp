@@ -19,15 +19,23 @@
 
 #include "ScriptEngine.h"
 
-int main() {
+void usage() {
+    std::cerr << "Usage: engine <script>" << std::endl;
+    exit(EXIT_FAILURE);
+}
+
+int main(int argc, char *argv[]) {
+
+    if (argc != 2)
+        usage();
 
     ScriptEngine engine;
     try {
-        engine.Run("../script.lua");
+        engine.Run(argv[1]);
     } catch (const std::runtime_error &err) {
         std::cerr << err.what() << std::endl;
-        return 1;
+        exit(EXIT_FAILURE);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
