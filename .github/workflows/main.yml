@@ -28,5 +28,10 @@ jobs:
         id: runcmake_cmd
         with:
           useVcpkgToolchainFile: true
-          buildDirectory: '${{ runner.workspace }}/build'
+          buildDirectory: ${{ runner.workspace }}/build
           cmakeBuildType: Release
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: engine
+          path: ${{ runner.workspace }}/build/engine.exe
