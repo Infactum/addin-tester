@@ -37,13 +37,13 @@ std::vector<std::string> split(std::string s, const std::string &delimiter) {
 }
 
 std::vector<std::string> AddInObjectFactory::GetClassNames() {
-    auto getClassNames = lib.get<char16_t *()>("GetClassNames");
+    auto getClassNames = lib.get<WCHAR_T *()>("GetClassNames");
     auto names = utf16_to_utf8(getClassNames());
     return split(names, "|");
 }
 
 AddInObject AddInObjectFactory::GetClassObject(const std::string &name) {
-    auto getClassObject = lib.get<long(const char16_t *, IComponentBase **)>("GetClassObject");
+    auto getClassObject = lib.get<long(const WCHAR_T *, IComponentBase **)>("GetClassObject");
 
     IComponentBase *ptr{nullptr};
     auto name_ = utf8_to_utf16(name);

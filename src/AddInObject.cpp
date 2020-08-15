@@ -37,7 +37,7 @@ AddInObject::AddInObject(std::shared_ptr<IComponentBase> obj)
         throw std::runtime_error("setMemManager() call failed!");
 
     auto locale_ = utf8_to_utf16(std::locale().name());
-    obj_->SetLocale(reinterpret_cast<const WCHAR_T *>(locale_.c_str()));
+    obj_->SetLocale(locale_.c_str());
 }
 
 AddInObject::~AddInObject() {
@@ -49,7 +49,7 @@ std::string AddInObject::RegisterExtensionAs() {
     if (!obj_->RegisterExtensionAs(&extension_name))
         throw std::runtime_error("RegisterExtensionAs() call failed!");
 
-    auto result = utf16_to_utf8(reinterpret_cast<char16_t *>(extension_name));
+    auto result = utf16_to_utf8(extension_name);
     MemoryManagerImpl::Instance().FreeMemory(reinterpret_cast<void **>(&extension_name));
 
     return result;
