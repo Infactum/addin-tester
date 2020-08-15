@@ -16,7 +16,7 @@ jobs:
 
     steps:
 
-      - uses: lukka/run-vcpkg@dev/disable_cache
+      - uses: lukka/run-vcpkg@v3
         id: runvcpkg
         with:
           vcpkgArguments: lua luabridge boost-system boost-filesystem boost-dll
