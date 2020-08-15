@@ -1,0 +1,37 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+        include:
+          - os: windows-latest
+            triplet: x64-windows
+
+    steps:
+      - uses: actions/checkout@v2
+        
+      - uses: lukka/run-vcpkg@v3
+        id: runvcpkg
+        with:
+          vcpkgArguments: lua luabridge boost-system boost-filesystem boost-dll
+          vcpkgTriplet: ${{ matrix.triplet }}
+          vcpkgGitCommitId: 0b5bbe30d940c597242cefa899dc93168054e466
+
+      - uses: lukka/run-cmake@v2
+        id: runcmake_cmd
+        with:
+          useVcpkgToolchainFile: true
+          buildDirectory: ${{ runner.workspace }}/build
+          cmakeBuildType: Release
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: engine
+          path: ${{ runner.workspace }}/build/engine.exe
