@@ -14,6 +14,8 @@ add_executable(${TARGET}
         AddInObjectFactory.cpp
         AddInObjectFactory.h
         MemoryManagerImpl.h
+        ScriptEngine.cpp
+        ScriptEngine.h
         str_convert.cpp
         str_convert.h
         main.cpp)

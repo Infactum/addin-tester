@@ -17,17 +17,28 @@
  *
  */
 
-#include "ScriptEngine.h"
+#ifndef SCRIPTENGINE_H
+#define SCRIPTENGINE_H
 
-int main() {
+#include <boost/core/noncopyable.hpp>
 
-    ScriptEngine engine;
-    try {
-        engine.Run("../script.lua");
-    } catch (const std::runtime_error &err) {
-        std::cerr << err.what() << std::endl;
-        return 1;
-    }
+#include <lua.hpp>
+#include <LuaBridge/LuaBridge.h>
+#include <LuaBridge/Vector.h>
 
-    return 0;
-}
+#include "AddInObjectFactory.h"
+
+class ScriptEngine : private boost::noncopyable {
+public:
+    ScriptEngine();
+
+    virtual ~ScriptEngine();
+
+    void Run(std::string_view path);
+
+private:
+    lua_State *L;
+};
+
+
+#endif //SCRIPTENGINE_H
