@@ -1,8 +1,15 @@
-local inspect = require('inspect')
+--[[
+    Attention!
+    AddInObjectFactory (Load call result) and AddInObject (GetClassObject call result) cannot be copied.
+    Even if you make a copy of such objects with Lua they'll still share internal C++ object reference.
+-- ]]
 
 local lib = Load("SampleAddIn.dll")
 local names = lib:GetClassNames()
-print("Class names: " .. inspect(names))
+print("Class names: ")
+for i = 1, #names do
+    print("  - " .. names[i])
+end
 
 local obj = lib:GetClassObject(names[1])
 
