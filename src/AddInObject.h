@@ -24,6 +24,7 @@
 #include <string>
 
 #include "ComponentBase.h"
+#include "Variant.h"
 
 class AddInObject {
 public:
@@ -41,9 +42,9 @@ public:
 
     std::string GetPropName(long num, long alias);
 
-    // GetPropVal
+    Variant GetPropVal(long num);
 
-    // SetPropVal
+    void SetPropVal(long num, Variant &v);
 
     inline bool IsPropReadable(long num) { return obj_->IsPropReadable(num); }
 

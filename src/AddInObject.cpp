@@ -65,6 +65,19 @@ std::string AddInObject::GetPropName(long num, long alias) {
     return utf16_to_utf8(name);
 }
 
+Variant AddInObject::GetPropVal(long num) {
+    Variant result;
+    if (!obj_->GetPropVal(num, result.Get()))
+        throw std::runtime_error("GetPropVal() call failed!");
+
+    return result;
+}
+
+void AddInObject::SetPropVal(long num, Variant &v) {
+    if (!obj_->SetPropVal(num, v.Get()))
+        throw std::runtime_error("SetPropVal() call failed!");
+}
+
 long AddInObject::FindMethod(const std::string &name) {
     auto name_ = utf8_to_utf16(name);
     return obj_->FindMethod(name_.c_str());

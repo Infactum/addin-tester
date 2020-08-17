@@ -18,6 +18,8 @@ add_executable(${TARGET}
         MemoryManagerImpl.h
         ScriptEngine.cpp
         ScriptEngine.h
+        Variant.cpp
+        Variant.h
         str_convert.cpp
         str_convert.h
         main.cpp)

@@ -19,11 +19,73 @@
 
 #include "ScriptEngine.h"
 
+#include <variant>
+
+#include "str_convert.h"
+
 using namespace luabridge;
+
+typedef std::variant<int32_t, double> LuaNumber;
+
+// This one gives us a way to distinct integers and doubles inside LuaRef
+template<>
+struct Stack<LuaNumber> {
+    static LuaNumber get(lua_State *L, int index) {
+        int is_num;
+        lua_Integer int_val = lua_tointegerx(L, index, &is_num);
+        if (is_num)
+            return static_cast<int32_t>(int_val);
+        else
+            return static_cast<double>(luaL_checknumber(L, index));
+    }
+
+    static bool isInstance(lua_State *L, int index) {
+        return lua_type(L, index) == LUA_TNUMBER;
+    }
+};
 
 LuaRef Load(const std::string &path, lua_State *L) {
     AddInObjectFactory factory(path);
     return {L, factory};
+}
+
+LuaRef VariantToLua(Variant *v, lua_State *L) {
+    switch (v->Index()) {
+        case VTYPE_EMPTY:
+            return L;
+        case VTYPE_I4:
+            return {L, static_cast<int32_t>(*v)};
+        case VTYPE_R8:
+            return {L, static_cast<double>(*v)};
+        case VTYPE_BOOL:
+            return {L, static_cast<bool>(*v)};
+        case VTYPE_PWSTR:
+            return {L, utf16_to_utf8(static_cast<std::basic_string_view<WCHAR_T>>(*v))};
+        default:
+            throw std::bad_cast();
+    }
+}
+
+Variant LuaToVariant(const LuaRef &val) {
+    Variant v;
+
+    if (val.isNil()) {
+    } else if (val.isBool()) {
+        v = val.cast<bool>();
+    } else if (val.isNumber()) {
+        auto tmp = val.cast<LuaNumber>();
+        if (std::holds_alternative<int32_t>(tmp))
+            v = std::get<int32_t>(tmp);
+        else if (std::holds_alternative<double>(tmp))
+            v = std::get<double>(tmp);
+    } else if (val.isString()) {
+        auto str = val.cast<std::string>();
+        v = utf8_to_utf16(str);
+    } else {
+        throw std::bad_cast();
+    }
+
+    return v;
 }
 
 ScriptEngine::ScriptEngine() : L(luaL_newstate()) {
@@ -42,8 +104,8 @@ ScriptEngine::ScriptEngine() : L(luaL_newstate()) {
             .addFunction("GetNProps", &AddInObject::GetNProps)
             .addFunction("FindProp", &AddInObject::FindProp)
             .addFunction("GetPropName", &AddInObject::GetPropName)
-            // GetPropVal
-            // SetPropVal
+            .addFunction("GetPropVal", &AddInObject::GetPropVal)
+            .addFunction("SetPropVal", &AddInObject::SetPropVal)
             .addFunction("IsPropReadable", &AddInObject::IsPropReadable)
             .addFunction("IsPropWritable", &AddInObject::IsPropWritable)
             .addFunction("GetNMethods", &AddInObject::GetNMethods)
@@ -57,6 +119,16 @@ ScriptEngine::ScriptEngine() : L(luaL_newstate()) {
             .endClass();
 
     getGlobalNamespace(L)
+            .beginClass<Variant>("v")
+            .endClass();
+
+    getGlobalNamespace(L)
+            .beginClass<Variant>("Variant")
+            .addFunction("Value", &VariantToLua)
+            .endClass();
+
+    getGlobalNamespace(L)
+            .addFunction("Variant", &LuaToVariant)
             .addFunction("Load", &Load);
 }
 
