@@ -87,3 +87,10 @@ std::string AddInObject::GetMethodName(long num, long alias) {
     auto name = obj_->GetMethodName(num, alias);
     return utf16_to_utf8(name);
 }
+
+Variant AddInObject::GetParamDefValue(long meth_num, long param_num) {
+    // FIXME: it might be good idea to return pair of has_param / value
+    Variant result;
+    obj_->GetParamDefValue(meth_num, param_num, result.Get());
+    return result;
+}

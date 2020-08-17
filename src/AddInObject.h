@@ -58,7 +58,7 @@ public:
 
     inline long GetNParams(long num) { return obj_->GetNParams(num); }
 
-    // GetParamDefValue
+    Variant GetParamDefValue(long meth_num, long param_num);
 
     inline bool HasRetVal(long num) { return obj_->HasRetVal(num); }
 

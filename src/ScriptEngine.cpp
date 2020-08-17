@@ -112,7 +112,7 @@ ScriptEngine::ScriptEngine() : L(luaL_newstate()) {
             .addFunction("FindMethod", &AddInObject::FindMethod)
             .addFunction("GetMethodName", &AddInObject::GetMethodName)
             .addFunction("GetNParams", &AddInObject::GetNParams)
-            // GetParamDefValue
+            .addFunction("GetParamDefValue", &AddInObject::GetParamDefValue)
             .addFunction("HasRetVal", &AddInObject::HasRetVal)
             // CallAsProc
             // CallAsFunc
