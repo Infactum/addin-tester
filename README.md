@@ -2,6 +2,7 @@
 
 # Native AddIn Tester
 
-Scriptable engine for interacting with 1C:Enterprise native add-ins.
+Scriptable engine for interacting with 1C:Enterprise native add-ins.  
+Allows to describe component classes and use them in Lua scripts.
 
-⚠ Early prototype.
+⚠ Work in progress
